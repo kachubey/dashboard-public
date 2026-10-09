@@ -1,0 +1,372 @@
+{
+  "app": {
+    "name": "Employee Portal",
+    "description": "Self-service portal for employees",
+    "demoBanner": "Demo · Sample data. Do not upload real VPN profiles."
+  },
+  "modules": {
+    "home": "Home",
+    "vpn": "VPN",
+    "documents": "Documents",
+    "instructions": "Instructions",
+    "admin": "Admin",
+    "comingSoon": "Coming soon"
+  },
+  "header": {
+    "openMenu": "Open menu",
+    "language": "Language",
+    "theme": "Theme",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "signOut": "Sign out",
+    "signedInAs": "Signed in as {name}"
+  },
+  "signin": {
+    "title": "Sign in",
+    "subtitle": "Use your corporate Microsoft account.",
+    "withMicrosoft": "Sign in with Microsoft",
+    "mockTitle": "Demo sign-in",
+    "mockHint": "Choose a sample user. VPN profiles are non-working examples.",
+    "mockNoRole": "no role",
+    "mockDenied": "This user has no portal role, so no session was created.",
+    "rateLimited": "Too many sign-in attempts. Wait a minute and try again.",
+    "notConfigured": "Microsoft sign-in is not configured yet.",
+    "demoSubtitle": "Explore the employee dashboard and administration without SSO."
+  },
+  "denied": {
+    "title": "No access",
+    "noRole": "Your account signed in successfully, but it has not been granted access to the portal.",
+    "failed": "Sign-in didn't complete. Please try again.",
+    "errorCode": "Error code: {code}",
+    "contact": "If you think you should have access, contact IT support.",
+    "support": "Open IT support",
+    "tryAgain": "Try another account"
+  },
+  "home": {
+    "greeting": "Hello, {name}!",
+    "intro": "Here you can get the work tools that IT has prepared for you.",
+    "vpnCardTitle": "VPN",
+    "vpnCardText": "Download your VPN configurations and set up the client on your computer or phone.",
+    "open": "Open"
+  },
+  "vpn": {
+    "title": "VPN",
+    "intro": "Download your configurations and follow the steps for your device.",
+    "types": {
+      "pritunl": {
+        "title": "Pritunl (OpenVPN)",
+        "description": "The main corporate VPN."
+      },
+      "vless": {
+        "title": "Xray / VLESS",
+        "description": "Alternative connection that works where regular VPN is blocked."
+      },
+      "wg": {
+        "title": "WireGuard",
+        "description": "The old VPN. Use it only if IT asked you to."
+      }
+    },
+    "legacyBadge": "Legacy, will be retired",
+    "configCount": "{count, plural, one {# config} other {# configs}}",
+    "updated": "Updated {date}",
+    "download": "Download",
+    "downloadTxt": "Download .txt",
+    "showLink": "Show link",
+    "hideLink": "Hide",
+    "copy": "Copy",
+    "copied": "Copied",
+    "qrHint": "Scan this code in the VPN app on your phone.",
+    "maskedHint": "The link is hidden. Showing it is logged.",
+    "howToConnect": "How to connect",
+    "emptyTitle": "No VPN configurations yet",
+    "emptyText": "IT hasn't prepared a VPN configuration for you yet. If you need VPN access, contact IT support.",
+    "support": "Contact IT support",
+    "instructionsFallback": "This guide isn't translated yet — showing the English version.",
+    "errors": {
+      "not_found": "This configuration is no longer available. Refresh the page.",
+      "rate_limited": "Too many attempts. Wait a few minutes and try again.",
+      "failed": "Something went wrong. Try again or contact IT support."
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "nav": {
+      "overview": "Overview",
+      "import": "Import",
+      "configs": "Configs",
+      "users": "Users",
+      "quarantine": "Quarantine",
+      "audit": "Audit log"
+    },
+    "overview": {
+      "intro": "What needs attention right now.",
+      "active": "Active configs",
+      "pending": "Waiting for owner",
+      "pendingHint": "Imported, but nobody with that key has signed in yet.",
+      "notDownloaded": "Not picked up yet",
+      "notDownloadedHint": "Active configs nobody has downloaded.",
+      "quarantine": "In quarantine",
+      "quarantineHint": "Rejected files to fix or delete.",
+      "users": "Users",
+      "open": "Open"
+    },
+    "common": {
+      "search": "Search",
+      "apply": "Apply",
+      "reset": "Reset",
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {pages}",
+      "total": "{count, plural, one {# item} other {# items}}",
+      "never": "never",
+      "none": "—",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "save": "Save",
+      "allTypes": "All types",
+      "noResults": "Nothing found."
+    },
+    "import": {
+      "intro": "Upload config files named '<owner>__<type>__<label>.<ext>' (Pritunl .tar exports and .csv manifests work too). You'll see a preview before anything is saved.",
+      "drop": "Drop files here or click to choose",
+      "selected": "{count, plural, one {# file selected} other {# files selected}}",
+      "clear": "Clear",
+      "preview": "Preview",
+      "commit": "Import {count, plural, one {# config} other {# configs}}",
+      "commitQuarantine": "…and send {count} to quarantine",
+      "working": "Working…",
+      "columns": {
+        "source": "File",
+        "owner": "Owner",
+        "type": "Type",
+        "label": "Label",
+        "match": "Match",
+        "action": "Result"
+      },
+      "match": {
+        "matched": "matched",
+        "pending": "waiting",
+        "invalid": "invalid"
+      },
+      "action": {
+        "create": "create",
+        "replace": "new version",
+        "unchanged": "unchanged",
+        "quarantine": "quarantine"
+      },
+      "reactivates": "reactivates",
+      "waitsForSignIn": "waits for first sign-in",
+      "summary": "Create {create} · new version {replace} · unchanged {unchanged} · quarantine {quarantine}",
+      "done": "Imported: {create} created, {replace} replaced, {quarantine} quarantined.",
+      "nothingToDo": "Nothing to import — everything is unchanged.",
+      "errors": {
+        "stale_preview": "The files changed since the preview. Preview again.",
+        "rate_limited": "Too many uploads. Wait a few minutes.",
+        "batch_too_large": "Upload is too large (20 MB max).",
+        "too_many_files": "Too many files (500 max).",
+        "no_files": "Choose at least one file.",
+        "failed": "Import failed. Nothing was saved.",
+        "forbidden": "Request refused.",
+        "not_found": "Admins only.",
+        "bad_request": "Bad request."
+      },
+      "ownerChange": "previous owner's versions are destroyed"
+    },
+    "configs": {
+      "searchPlaceholder": "Owner, user or label",
+      "status": {
+        "live": "All (not deleted)",
+        "active": "Active",
+        "pending": "Waiting for owner",
+        "orphaned": "Previous owner",
+        "not_downloaded": "Not picked up",
+        "deactivated": "Deactivated",
+        "deleted": "Deleted"
+      },
+      "columns": {
+        "owner": "Owner",
+        "type": "Type",
+        "label": "Label",
+        "version": "Version",
+        "updated": "Updated",
+        "downloaded": "Last download",
+        "status": "Status"
+      },
+      "waitingForOwner": "waiting for owner",
+      "ownerKey": "Owner key",
+      "details": "Details",
+      "versions": "Versions",
+      "noContentAccess": "Admins can manage configs but can't download other people's files.",
+      "replaceHint": "To replace a config, import a new file with the same owner, type and label.",
+      "activeVersion": "active",
+      "rollback": "Make active",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "deleteTitle": "Delete this config?",
+      "deleteText": "All versions are destroyed for good (crypto-shredded). The employee loses access immediately. This can't be undone.",
+      "rollbackTitle": "Make version {version} active?",
+      "rollbackText": "The employee will get this version on their next download.",
+      "source": "Source",
+      "importedBy": "Imported by",
+      "size": "Size",
+      "created": "Created",
+      "back": "Back to configs",
+      "statusLabel": {
+        "active": "active",
+        "deactivated": "deactivated",
+        "deleted": "deleted"
+      },
+      "orphaned": "belongs to previous owner",
+      "orphanedHint": "The owner key now points at someone else (or nobody). This config stays with the person shown and is invisible to the new key holder. Delete it, and import new files for the new owner."
+    },
+    "users": {
+      "searchPlaceholder": "Name or UPN",
+      "columns": {
+        "user": "User",
+        "roles": "Roles",
+        "lastSignIn": "Last sign-in",
+        "keys": "Owner keys",
+        "configs": "Active configs"
+      },
+      "conflict": "Their key “{key}” belongs to {upn}",
+      "auto": "auto",
+      "manual": "manual",
+      "removeTitle": "Remove owner key “{key}”?",
+      "removeText": "Configs with this key stop being visible to this user until the key is linked again.",
+      "addKey": "Add key",
+      "keyType": {
+        "short_upn": "UPN prefix",
+        "employee_code": "Employee code"
+      },
+      "keyValue": "Key",
+      "move": "If the key belongs to someone else, move it (they lose those configs)",
+      "unlinked": {
+        "title": "Waiting for owner",
+        "intro": "Configs whose owner key isn't linked to anyone. Usually a new employee who hasn't signed in yet — or a typo in the file name. Link the key to a person to make the configs visible to them.",
+        "key": "Owner key",
+        "configs": "Configs",
+        "since": "Imported",
+        "linkTo": "Link to user",
+        "link": "Link",
+        "old": "older than 14 days — check for a typo",
+        "empty": "Every owner key is linked."
+      },
+      "revoke": "Sign out everywhere",
+      "revokeTitle": "Sign {upn} out everywhere?",
+      "revokeText": "All their sessions end now. Use it right after removing someone's role in Entra; otherwise their current session lasts until it expires."
+    },
+    "quarantine": {
+      "intro": "Files the importer rejected. They are kept encrypted for 30 days. Fix the owner/type/label to accept a file, or delete it. If the content itself is broken, delete it and import a corrected file.",
+      "columns": {
+        "file": "File",
+        "reason": "Reason",
+        "added": "Added",
+        "expires": "Deleted on"
+      },
+      "fix": "Accept as…",
+      "accept": "Accept",
+      "noContent": "no content stored",
+      "deleteTitle": "Delete this file?",
+      "deleteText": "The encrypted copy is destroyed for good.",
+      "empty": "Quarantine is empty."
+    },
+    "audit": {
+      "user": "User (UPN)",
+      "action": "Action",
+      "allActions": "All actions",
+      "from": "From",
+      "to": "To",
+      "export": "Export CSV",
+      "exportHint": "Exports up to 50,000 rows with the current filters.",
+      "columns": {
+        "time": "Time",
+        "actor": "Who",
+        "action": "Action",
+        "target": "Config",
+        "ip": "IP",
+        "details": "Details"
+      },
+      "empty": "No entries."
+    },
+    "result": {
+      "config_deactivated": "Config deactivated.",
+      "config_reactivated": "Config reactivated.",
+      "config_rolled_back": "Version {version} is active now.",
+      "config_deleted": "Config deleted.",
+      "alias_saved": "Key “{key}” now belongs to {upn}.",
+      "alias_removed": "Key “{key}” removed.",
+      "alias_taken": "Key “{key}” already belongs to {upn}. Tick “move” to reassign it.",
+      "invalid_key": "Invalid key: use letters, digits, . - _",
+      "user_not_found": "User not found.",
+      "quarantine_resolved": "File accepted.",
+      "quarantine_deleted": "File deleted.",
+      "quarantine_invalid": "Still not accepted: {reason}",
+      "no_content": "This file has no stored content — delete it and import again.",
+      "no_reactivate": "There is no version to reactivate.",
+      "not_found": "Not found — refresh the page.",
+      "failed": "Something went wrong.",
+      "alias_saved_kept": "Key “{key}” now belongs to {upn}. {kept} existing config(s) stay with the previous owner — import new files for {upn}.",
+      "self_assign": "Admins can't assign owner keys or quarantined files to themselves.",
+      "owner_locked": "The owner was read from the file name and can't be changed here — only type and label.",
+      "sessions_revoked": "{upn} signed out ({count} session(s))."
+    },
+    "reasons": {
+      "name_missing_extension": "File name has no extension",
+      "name_pattern": "File name must be '<owner>__<type>__<label>.<ext>'",
+      "name_bad_owner_key": "Owner key may contain only letters, digits, . - _",
+      "name_unknown_type": "Unknown config type",
+      "name_bad_label": "Label may contain only letters, digits, . - _",
+      "name_extension_mismatch": "Extension doesn't match the config type",
+      "too_large": "File is too large",
+      "binary_content": "File is not text",
+      "empty": "File is empty",
+      "ovpn_missing_client": ".ovpn has no “client” line",
+      "ovpn_missing_remote": ".ovpn has no “remote” line",
+      "vless_not_a_link": "Not a vless:// link",
+      "vless_malformed": "vless:// link is malformed",
+      "vless_bad_uuid": "vless:// link has no valid UUID",
+      "vless_missing_host": "vless:// link has no host",
+      "vless_bad_port": "vless:// link has no valid port",
+      "vless_expected_one_link": "File must contain exactly one vless:// link",
+      "wg_missing_interface": ".conf has no [Interface] section",
+      "wg_missing_peer": ".conf has no [Peer] section",
+      "wg_missing_private_key": ".conf has no PrivateKey",
+      "tar_unreadable": ".tar archive can't be read",
+      "tar_no_ovpn": ".tar archive contains no .ovpn file",
+      "pritunl_no_header": "Not a Pritunl download (no profile header with user and server). Rename it '<owner>__pritunl__<label>.ovpn' or accept it with an owner below",
+      "pritunl_owner_mismatch": "The Pritunl profile inside belongs to a different user than the owner in the file name. Delete it and upload the right file",
+      "manifest_unreadable": "CSV manifest can't be parsed",
+      "manifest_too_many_rows": "CSV manifest has too many rows",
+      "manifest_empty_value": "Manifest row has no content or file name",
+      "manifest_file_not_found": "Manifest refers to a file that isn't in this upload",
+      "owner_ambiguous": "Owner key is ambiguous or its automatic alias is outdated; verify the recipient in Users.",
+      "duplicate_in_batch": "Same owner/type/label twice in this upload",
+      "unknown": "Unknown reason",
+      "ovpn_forbidden_directive": ".ovpn contains a command-running directive (up/down/script-security/plugin…)",
+      "wg_forbidden_directive": ".conf contains PreUp/PostUp/PreDown/PostDown commands",
+      "manifest_file_reused": "A manifest refers to the same file twice"
+    },
+    "auditActions": {
+      "sign_in": "Sign-in",
+      "sign_out": "Sign-out",
+      "access_denied": "Access denied",
+      "config_download": "Config downloaded",
+      "config_reveal": "Link shown",
+      "import_commit": "Import",
+      "config_replace": "Config replaced",
+      "config_deactivate": "Config deactivated",
+      "config_reactivate": "Config reactivated",
+      "config_rollback": "Config rolled back",
+      "config_delete": "Config deleted",
+      "alias_update": "Owner key changed",
+      "quarantine_resolve": "Quarantine: accepted",
+      "quarantine_delete": "Quarantine: deleted",
+      "audit_export": "Audit exported",
+      "sessions_revoke": "Sessions revoked"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Go to home page"
+  }
+}

@@ -1,0 +1,14 @@
+{
+	auto_https disable_redirects
+	default_sni {$DEMO_HOST}
+}
+
+https://{$DEMO_HOST}:8443 {
+	tls internal
+	encode gzip
+	request_body {
+		max_size 25MB
+	}
+	header -Server
+	reverse_proxy app:3000
+}

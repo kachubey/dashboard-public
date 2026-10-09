@@ -1,0 +1,4 @@
+ownerKey,type,label,content_or_filename
+bob,vless,de-1,vless://9fffd1a8-1e4b-4faa-af9b-6eb03b54e63a@de-1.example.test:443?type=tcp&security=reality&sni=www.example.com&fp=firefox&pbk=BYzKLQdXbIzI-u63kAZ4xKcAx8SGMT76l8TfWvP_a4I&sid=f9d2c485&flow=xtls-rprx-vision#bob-de
+smith,wg,lab,smith-lab.conf
+contractor7,vless,us-1,vless://cf918cd4-3ae3-438b-88c2-c529eb88995f@us-1.example.test:443?type=tcp&security=reality&sni=www.example.com&fp=firefox&pbk=bNHdCRJ5Uc5ElKAwxaDDiu7TN1kKHb4qRHCNJAIt6Dc&sid=fb8b55df&flow=xtls-rprx-vision#c7

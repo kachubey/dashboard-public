@@ -1,0 +1,1 @@
+vless://c9ee3e0f-464d-4413-83a4-3786c02937c3@fi-1.example.test:443?type=tcp&security=reality&sni=www.example.com&fp=firefox&pbk=TKNQ87UTaTT-o0FCDQkclf2P0gNU1Qb0JX7AmLSriz8&sid=dd745159&flow=xtls-rprx-vision#smith-fi

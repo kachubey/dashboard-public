@@ -1,0 +1,37 @@
+# Caddy obtains and renews the TLS certificate automatically (Let's Encrypt)
+# for PORTAL_HOST. The DNS record must point at this server and ports 80/443
+# must be reachable from the internet for the ACME HTTP/TLS challenge.
+#
+# CADDY_TLS="tls internal" → Caddy's own CA instead of Let's Encrypt (test
+# servers without public DNS; browsers will warn). Empty = Let's Encrypt.
+#
+# Caddy is the only proxy in front of the app and replaces any client-supplied
+# X-Forwarded-For, so the app logs the real client IP. If another proxy or a
+# CDN sits in front, add it with the `trusted_proxies` server option.
+{
+	# Clients connecting by IP address send no SNI; serve the portal's
+	# certificate to them anyway.
+	default_sni {$PORTAL_HOST}
+	servers {
+		timeouts {
+			read_header 10s
+			read_body 120s
+			write 120s
+			idle 120s
+		}
+	}
+}
+
+{$PORTAL_HOST} {
+	{$CADDY_TLS}
+
+	encode zstd gzip
+
+	request_body {
+		max_size 25MB
+	}
+
+	header -Server
+
+	reverse_proxy app:3000
+}

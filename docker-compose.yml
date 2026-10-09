@@ -1,0 +1,23 @@
+# Development database only. The app itself runs with `npm run dev`.
+# Uses the active Docker context (or DOCKER_CONTEXT). See README → Local development.
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: ${DEV_POSTGRES_PASSWORD:-local-demo-only}
+      POSTGRES_DB: portal
+    ports:
+      - "5432:5432"
+    volumes:
+      # Postgres 18 images keep data under a versioned subdirectory of this path.
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portal -d portal"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

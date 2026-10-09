@@ -1,0 +1,113 @@
+# Explicit local demo, separate from the production Compose project and data.
+# Use ./deploy/demo.sh init [private IPv4], then ./deploy/demo.sh start.
+name: portal-demo
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-demo-env: &demo-env
+  NODE_ENV: development
+  AUTH_MOCK: "true"
+  ENTRA_TENANT_ID: ""
+  ENTRA_CLIENT_ID: ""
+  ENTRA_CLIENT_SECRET: ""
+  FEATURE_EMPLOYEE_ID: "false"
+  ALLOWED_UPN_DOMAINS: portal.test
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?run demo.sh init}
+      POSTGRES_DB: portal_demo
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portal -d portal_demo"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 512m
+    pids_limit: 128
+    logging: *logging
+    networks: [internal]
+
+  init:
+    build:
+      context: .
+      target: demo
+    image: employee-portal:demo
+    restart: "no"
+    env_file: .env.demo
+    environment:
+      <<: *demo-env
+      DATABASE_URL: postgres://portal:${POSTGRES_PASSWORD}@db:5432/portal_demo
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?run demo.sh init}
+    command: ["sh", "-c", "node node_modules/tsx/dist/cli.mjs scripts/migrate.mts && node node_modules/tsx/dist/cli.mjs scripts/seed.mts --if-empty"]
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 512m
+    pids_limit: 128
+    logging: *logging
+    networks: [internal]
+
+  app:
+    image: employee-portal:demo
+    restart: unless-stopped
+    env_file: .env.demo
+    environment:
+      <<: *demo-env
+      DATABASE_URL: postgres://portal_app:${APP_DB_PASSWORD}@db:5432/portal_demo
+      POSTGRES_PASSWORD: ""
+      APP_DB_PASSWORD: ""
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      start_period: 60s
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    mem_limit: 2g
+    cpus: 2.0
+    pids_limit: 256
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    logging: *logging
+    networks: [edge, internal]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "${DEMO_HOST:?run demo.sh init}:8443:8443"
+    environment:
+      DEMO_HOST: ${DEMO_HOST}
+    volumes:
+      - ./deploy/Caddyfile.demo:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    mem_limit: 256m
+    pids_limit: 128
+    logging: *logging
+    networks: [edge]
+
+networks:
+  edge:
+  internal:
+    internal: true
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

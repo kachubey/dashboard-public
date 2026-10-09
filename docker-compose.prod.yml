@@ -1,0 +1,120 @@
+# Production stack: Caddy (TLS, reverse proxy) → app → PostgreSQL.
+#   cp .env.production.example .env   # fill in, see docs/DEPLOY.md
+#   docker compose -f docker-compose.prod.yml up -d --build
+# Only Caddy publishes ports; the app and the database live on an internal network.
+
+name: portal
+
+x-logging: &bounded-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 1.0
+    pids_limit: 128
+    logging: *bounded-logging
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      PORTAL_HOST: ${PORTAL_HOST:?set PORTAL_HOST in .env}
+      CADDY_TLS: ${CADDY_TLS:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    networks: [edge]
+
+  # One-shot: applies migrations as the database owner and keeps the
+  # restricted runtime role up to date, then exits. The app starts only
+  # after it succeeded, and never sees the owner password.
+  migrate:
+    build: .
+    image: employee-portal:${PORTAL_VERSION:-latest}
+    restart: "no"
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    logging: *bounded-logging
+    command: ["node", "dist/migrate.mjs"]
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://portal:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/portal
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?set APP_DB_PASSWORD in .env}
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    networks: [internal]
+
+  app:
+    image: employee-portal:${PORTAL_VERSION:-latest}
+    restart: unless-stopped
+    mem_limit: 1536m
+    cpus: 2.0
+    pids_limit: 256
+    logging: *bounded-logging
+    command: ["node", "server.js"]
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://portal_app:${APP_DB_PASSWORD}@db:5432/portal
+      # Owner credentials stay out of the app container.
+      POSTGRES_PASSWORD: ""
+      APP_DB_PASSWORD: ""
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+      - /app/.next/cache:size=64m,uid=1000,gid=1000,mode=0700
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    networks: [edge, internal]
+
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    mem_limit: 1g
+    cpus: 1.0
+    pids_limit: 256
+    logging: *bounded-logging
+    environment:
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: portal
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portal -d portal"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    security_opt:
+      - no-new-privileges:true
+    networks: [internal]
+
+networks:
+  edge:
+  internal:
+    internal: true
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

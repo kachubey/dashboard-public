@@ -1,0 +1,1 @@
+vless://8f7c6e94-ae18-4193-890f-20515af84778@x.example.test:443?type=tcp&security=reality&sni=www.example.com&fp=firefox&pbk=avnVDmwjc9sDkCPOyjGO_vtgHMv2ha-M8fx-mN4AHBQ&sid=ac5cc75f&flow=xtls-rprx-vision#x

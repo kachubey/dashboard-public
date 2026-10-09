@@ -1,0 +1,14 @@
+.git
+.next
+node_modules
+dist
+coverage
+inbox
+backups
+.env*
+!.env.example
+!.env.production.example
+*.log
+.DS_Store
+
+.local
